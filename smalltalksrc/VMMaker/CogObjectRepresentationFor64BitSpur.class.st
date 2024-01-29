@@ -436,8 +436,8 @@ CogObjectRepresentationFor64BitSpur >> genFloatArithmetic: arithmeticOperator pr
 	cogit Jump: doOp.
 	jumpNotSmallInteger jmpTarget: cogit Label.
 	jumpImmediate := self genJumpImmediate: Arg0Reg.
-	self genGetCompactClassIndexNonImmOf: Arg0Reg into: SendNumArgsReg.
-	self genCmpClassFloatCompactIndexR: SendNumArgsReg.
+	self genGetClassIndexNonImmOf: Arg0Reg into: SendNumArgsReg.
+	self genCmpClassBoxedFloatIndexR: SendNumArgsReg.
 	jumpNotBoxedFloat := cogit JumpNonZero: 0.
 	self genGetDoubleValueOf: Arg0Reg into: DPFPReg1.
 	cogit Jump: doOp.
@@ -481,8 +481,8 @@ CogObjectRepresentationFor64BitSpur >> genFloatComparison: jumpOpcodeGenerator i
 	cogit Jump: compare.
 	jumpNotSmallInteger jmpTarget: cogit Label.
 	jumpImmediate := self genJumpImmediate: Arg0Reg.
-	self genGetCompactClassIndexNonImmOf: Arg0Reg into: SendNumArgsReg.
-	self genCmpClassFloatCompactIndexR: SendNumArgsReg.
+	self genGetClassIndexNonImmOf: Arg0Reg into: SendNumArgsReg.
+	self genCmpClassBoxedFloatIndexR: SendNumArgsReg.
 	jumpNotBoxedFloat := cogit JumpNonZero: 0.
 	self genGetDoubleValueOf: Arg0Reg into: DPFPReg1.
 	cogit Jump: compare.

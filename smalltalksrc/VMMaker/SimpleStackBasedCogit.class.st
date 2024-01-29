@@ -1950,7 +1950,7 @@ SimpleStackBasedCogit >> genPrimitiveHashMultiply [
 
 	jmpNotSmallInt jmpTarget: self Label.
 	jmpFailImm := objectRepresentation genJumpImmediate: ReceiverResultReg.
-	objectRepresentation genGetCompactClassIndexNonImmOf: ReceiverResultReg into: ClassReg.
+	objectRepresentation genGetClassIndexNonImmOf: ReceiverResultReg into: ClassReg.
 	self CmpCq: ClassLargePositiveIntegerCompactIndex R: ClassReg.
 	jmpFailNonImm := self JumpNonZero: 0.
 	objectRepresentation genLoadSlot: 0 sourceReg: ReceiverResultReg destReg: ReceiverResultReg.

@@ -414,8 +414,8 @@ CogObjectRepresentationForSpur >> genBoxedOrSmallFloat: floatOopReg scratchReg: 
 	jumpImmediate := self genJumpImmediate: floatOopReg.
 	
 	"Compare with the boxed float clas."
-	self genGetCompactClassIndexNonImmOf: floatOopReg into: scratchReg.
-	self genCmpClassFloatCompactIndexR: scratchReg.
+	self genGetClassIndexNonImmOf: floatOopReg into: scratchReg.
+	self genCmpClassBoxedFloatIndexR: scratchReg.
 	jumpFailClass := cogit JumpNonZero: 0.
 
 	"Fetch the double from the boxed float."	
@@ -831,6 +831,12 @@ CogObjectRepresentationForSpur >> genGetBits: mask ofFormatByteOf: sourceReg int
 ]
 
 { #category : #'compile abstract instructions' }
+CogObjectRepresentationForSpur >> genGetClassIndexNonImmOf: instReg into: destReg [
+	"Fetch the instance's class index into destReg."
+	^self genGetClassIndexOfNonImm: instReg into: destReg
+]
+
+{ #category : #'compile abstract instructions' }
 CogObjectRepresentationForSpur >> genGetClassIndexOfNonImm: sourceReg into: destReg [
 	"Fetch the instance's class index into destReg."
 
@@ -907,12 +913,6 @@ CogObjectRepresentationForSpur >> genGetClassObjectOfClassIndex: instReg into: d
 { #category : #'compile abstract instructions' }
 CogObjectRepresentationForSpur >> genGetClassTagOf: instReg into: destReg scratchReg: scratchReg [
 	^self genGetInlineCacheClassTagFrom: instReg into: destReg forEntry: true
-]
-
-{ #category : #'compile abstract instructions' }
-CogObjectRepresentationForSpur >> genGetCompactClassIndexNonImmOf: instReg into: destReg [
-	"Fetch the instance's class index into destReg."
-	^self genGetClassIndexOfNonImm: instReg into: destReg
 ]
 
 { #category : #'compile abstract instructions' }
@@ -1526,7 +1526,7 @@ CogObjectRepresentationForSpur >> genPrimitiveLoadFromExternalAddressWith: aBloc
 	cogit MoveR: Arg0Reg R: Arg1Reg.
 
 	jumpImmediate := self genJumpImmediate: ReceiverResultReg.
-	self genGetCompactClassIndexNonImmOf: ReceiverResultReg into: TempReg.
+	self genGetClassIndexNonImmOf: ReceiverResultReg into: TempReg.
 	cogit CmpCq: objectMemory classExternalAddressIndex R: TempReg.
 	jumpNonExternalAddress := cogit JumpNonZero: 0.
 	jumpBadIndex := self genJumpNotSmallInteger: Arg0Reg scratchReg: TempReg.
@@ -2062,7 +2062,7 @@ CogObjectRepresentationForSpur >> genPrimitiveStoreIntoExternalAddressWith: aBlo
 	cogit genLoadArgAtDepth: 0 into: Arg1Reg.
 	
 	jumpImmediate := self genJumpImmediate: ReceiverResultReg.
-	self genGetCompactClassIndexNonImmOf: ReceiverResultReg into: TempReg.
+	self genGetClassIndexNonImmOf: ReceiverResultReg into: TempReg.
 	cogit CmpCq: objectMemory classExternalAddressIndex R: TempReg.
 	jumpNonExternalAddress := cogit JumpNonZero: 0.
 	jumpBadIndex := self genJumpNotSmallInteger: Arg0Reg scratchReg: TempReg.
@@ -2087,7 +2087,7 @@ CogObjectRepresentationForSpur >> genPrimitiveStorePointerIntoBytes [
 	^ self genPrimitiveStore: BytesPerWord intoBytesWith: [ :destPointer :valueOop |
 		| jumpImmediate jumpNonExternalAddress |
 		jumpImmediate := self genJumpImmediate: valueOop.
-		self genGetCompactClassIndexNonImmOf: valueOop into: TempReg.
+		self genGetClassIndexNonImmOf: valueOop into: TempReg.
 		cogit CmpCq: objectMemory classExternalAddressIndex R: TempReg.
 		jumpNonExternalAddress := cogit JumpNonZero: 0.
 
@@ -2105,7 +2105,7 @@ CogObjectRepresentationForSpur >> genPrimitiveStorePointerIntoExternalAddress [
 	^ self genPrimitiveStoreIntoExternalAddressWith: [ :destPointer :valueOop |
 		| jumpImmediate jumpNonExternalAddress |
 		jumpImmediate := self genJumpImmediate: valueOop.
-		self genGetCompactClassIndexNonImmOf: valueOop into: TempReg.
+		self genGetClassIndexNonImmOf: valueOop into: TempReg.
 		cogit CmpCq: objectMemory classExternalAddressIndex R: TempReg.
 		jumpNonExternalAddress := cogit JumpNonZero: 0.
 

@@ -334,7 +334,7 @@ VMJittedGeneralPrimitiveTest >> testConvertSmallIntegerToInteger [
 VMJittedGeneralPrimitiveTest >> testGetClassIndexOfObjectObtainsClassIndex [
 
 	self compile: [ | jump | 
-		jump := cogit objectRepresentation genGetCompactClassIndexNonImmOf: Arg0Reg into: ReceiverResultReg.
+		jump := cogit objectRepresentation genGetClassIndexNonImmOf: Arg0Reg into: ReceiverResultReg.
 	].
 
 	machineSimulator arg0RegisterValue: memory falseObject.
@@ -1601,7 +1601,7 @@ VMJittedGeneralPrimitiveTest >> testPrimitiveLessThanDoesNotCompileIfReceiverTag
 ]
 
 { #category : #'tests - primitiveLessThan' }
-VMJittedGeneralPrimitiveTest >> testPrimitiveLessThanFailsWhenArgumentIsNotSmallInteger [
+VMJittedGeneralPrimitiveTest >> testPrimitiveLessThanFailsWhenArgumentIsBoxedFloat [
 	
 	| endInstruction primitiveAddress |
 	
@@ -1612,9 +1612,45 @@ VMJittedGeneralPrimitiveTest >> testPrimitiveLessThanFailsWhenArgumentIsNotSmall
 		"If the primitive fails it continues, so we need to have an instruction to detect the end"
 		endInstruction := cogit Stop ].
 
+	self prepareStackForSendReceiver: (memory integerObjectOf: 7) arguments: { memory boxedFloatObjectOf: 1.0 }.
+"	1halt."
+	self runFrom: primitiveAddress until: callerAddress.
+	self assert: self machineSimulator receiverRegisterValue equals: (memory falseObject).
+]
+
+{ #category : #'tests - primitiveLessThan' }
+VMJittedGeneralPrimitiveTest >> testPrimitiveLessThanFailsWhenArgumentIsNotSmallInteger [
+	
+	| endInstruction primitiveAddress |
+	
+	cogit receiverTags: memory smallIntegerTag.
+	
+	primitiveAddress := self compile: [ 
+		cogit objectRepresentation genPrimitiveSmallFloatLessThan.
+		"If the primitive fails it continues, so we need to have an instruction to detect the end"
+		endInstruction := cogit Stop ].
+
 	self prepareStackForSendReceiver: (memory integerObjectOf: 7) arguments: { memory nilObject }.
 	
 	self runFrom: primitiveAddress until: endInstruction address.
+]
+
+{ #category : #'tests - primitiveLessThan' }
+VMJittedGeneralPrimitiveTest >> testPrimitiveLessThanFailsWhenArgumentIsSmallFloat [
+	
+	| endInstruction primitiveAddress |
+	
+	cogit receiverTags: memory smallIntegerTag.
+	
+	primitiveAddress := self compile: [ 
+		cogit objectRepresentation genPrimitiveLessThan.
+		"If the primitive fails it continues, so we need to have an instruction to detect the end"
+		endInstruction := cogit Stop ].
+
+	self prepareStackForSendReceiver: (memory integerObjectOf: 7) arguments: { memory smallFloatObjectOf: 1.0 }.
+"	1halt."
+	self runFrom: primitiveAddress until: callerAddress.
+	self assert: self machineSimulator receiverRegisterValue equals: (memory falseObject).
 ]
 
 { #category : #'tests - primitiveLessThan' }
