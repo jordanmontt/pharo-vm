@@ -1618,9 +1618,11 @@ CogObjectRepresentation >> genSmallIntegerComparison: jumpOpcode orDoubleCompari
 		return address"
 	| jumpCond r jumpNotSmallFloat compare jumpNotSmallInteger jumpImmediate jumpNotBoxedFloat |
 	<var: #jumpFPOpcodeGenerator declareC: 'AbstractInstruction * NoDbgRegParms (*jumpFPOpcodeGenerator)(void *)'>
-	<var: #jumpNonInt type: #'AbstractInstruction *'>
 	<var: #jumpCond type: #'AbstractInstruction *'>
-	<var: #jumpFail type: #'AbstractInstruction *'>
+	<var: #jumpNotSmallFloat type: #'AbstractInstruction *'>
+	<var: #jumpNotSmallInteger type: #'AbstractInstruction *'>
+	<var: #jumpImmediate type: #'AbstractInstruction *'>
+	<var: #jumpNotBoxedFloat type: #'AbstractInstruction *'>
 	r := self genSmallIntegerComparison: jumpOpcode.
 	r < 0 ifTrue:
 		[^r].
