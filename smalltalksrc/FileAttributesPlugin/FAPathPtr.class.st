@@ -17,17 +17,18 @@ sessionId
 
 "
 Class {
-	#name : #FAPathPtr,
-	#superclass : #VMStructType,
+	#name : 'FAPathPtr',
+	#superclass : 'VMStructType',
 	#instVars : [
 		'sessionId',
 		'faPath',
 		'plugin'
 	],
-	#category : #FileAttributesPlugin
+	#category : 'FileAttributesPlugin',
+	#package : 'FileAttributesPlugin'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FAPathPtr class >> fromArray: anArray plugin: aFileAttributesPluginSimulator [
 
 	^self new
@@ -37,7 +38,7 @@ FAPathPtr class >> fromArray: anArray plugin: aFileAttributesPluginSimulator [
 		yourself
 ]
 
-{ #category : #translation }
+{ #category : 'translation' }
 FAPathPtr class >> instVarNamesAndTypesForTranslationDo: aBinaryBlock [
 	"Define a CallbackContext, the argument to sendInvokeCallbackContext:
 	 self typedef"
@@ -52,7 +53,7 @@ FAPathPtr class >> instVarNamesAndTypesForTranslationDo: aBinaryBlock [
 						otherwise: [#'void *'])]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FAPathPtr class >> plugin: aFileAttributesPlugin [
 
 	^self new 
@@ -60,37 +61,37 @@ FAPathPtr class >> plugin: aFileAttributesPlugin [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FAPathPtr >> faPath [
 
 	^ faPath
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FAPathPtr >> faPath: anObject [
 
 	^ faPath := anObject.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FAPathPtr >> plugin [
 
 	^ plugin
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FAPathPtr >> plugin: anObject [
 
 	^ plugin := anObject.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FAPathPtr >> sessionId [
 
 	^ sessionId
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FAPathPtr >> sessionId: anObject [
 
 	^ sessionId := anObject.

@@ -24,17 +24,18 @@ Format description
 	
 "
 Class {
-	#name : #PrintfFormatString,
-	#superclass : #Object,
+	#name : 'PrintfFormatString',
+	#superclass : 'Object',
 	#instVars : [
 		'format',
 		'string',
 		'outputStream'
 	],
-	#category : #Printf
+	#category : 'Printf',
+	#package : 'Printf'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 PrintfFormatString class >> examples [
 	self inform: ('Here is a string "%s".' printf: 'hello world').
 	self inform: ('Here is a string "%s" and another shortened "%-14.7s".'
@@ -51,7 +52,7 @@ PrintfFormatString class >> examples [
 		printf: ((Array with: 'long' with: 'hello world' with: 'hello world' with: 42.0) copyWith: 42.1234567)).
 ]
 
-{ #category : #printf }
+{ #category : 'printf' }
 PrintfFormatString >> << object [ 
 	"Render object according to next format descriptor in format. 
 	Append it to string"
@@ -88,7 +89,7 @@ PrintfFormatString >> << object [
 	^self string
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PrintfFormatString >> collectFormatDescriptorsAndStrings: formatStream [
 	format := ReadWriteStream on: (Array new: 10).
 	string := ReadWriteStream on: (Array new: 10).
@@ -101,7 +102,7 @@ PrintfFormatString >> collectFormatDescriptorsAndStrings: formatStream [
 	 format nextPut: (PrintfFormatDescriptor scanFrom: formatStream)] repeat
 ]
 
-{ #category : #printf }
+{ #category : 'printf' }
 PrintfFormatString >> f: aStream printf: arguments [
 	"inst var string holds all text contained in the formatstring. %f blabla %d"
 	| position savedStream |
@@ -116,7 +117,7 @@ PrintfFormatString >> f: aStream printf: arguments [
 	^aStream position - position
 ]
 
-{ #category : #printf }
+{ #category : 'printf' }
 PrintfFormatString >> printf: arguments [
 	"inst var string holds all text contained in the formatstring. %f blabla %d"
 
@@ -126,7 +127,7 @@ PrintfFormatString >> printf: arguments [
 	^outputStream position
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PrintfFormatString >> process: arguments [
  	arguments asArgumentArrayForFormatString do: 
 		[:object | 
@@ -138,14 +139,14 @@ PrintfFormatString >> process: arguments [
         string atEnd ifFalse: [outputStream nextPutAll: string next]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PrintfFormatString >> reset [
         format reset.
         string reset.
         outputStream reset
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PrintfFormatString >> scanStringFrom: aStream [ 
 	| newString |
 	newString := (String new: 40) writeStream.
@@ -163,7 +164,7 @@ PrintfFormatString >> scanStringFrom: aStream [
 	^newString contents
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 PrintfFormatString >> setFormat: aString [
 	| formatStream |
 	"copy actual formatstrings to format"
@@ -175,7 +176,7 @@ PrintfFormatString >> setFormat: aString [
 	self collectFormatDescriptorsAndStrings: formatStream
 ]
 
-{ #category : #printf }
+{ #category : 'printf' }
 PrintfFormatString >> string [
 	^outputStream contents
 ]
