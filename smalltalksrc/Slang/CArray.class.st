@@ -166,6 +166,7 @@ CArray >> coerceTo: cTypeString sim: interpreterSimulator [
 		['double *']			-> [self asDoubleFloatAccessor].
 		['usqInt *']			-> [self shallowCopy beUnsigned; unitSize: interpreter bytesPerOop; yourself].
 		['sqInt *']			-> [self shallowCopy unitSize: interpreter bytesPerOop; yourself].
+		['int64_t *']		-> [self shallowCopy unitSize: 8; yourself].
 		['unsigned int *']	-> [self shallowCopy unitSize: 4; yourself].
 		['int *']				-> [self shallowCopy unitSize: 4; yourself].
 		['char *']			-> [self shallowCopy unitSize: 1; yourself].

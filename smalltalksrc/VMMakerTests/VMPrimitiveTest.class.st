@@ -5483,6 +5483,69 @@ VMPrimitiveTest >> testPrimitiveSubtractWithOverflowPreservesStack [
 	
 ]
 
+{ #category : 'tests - primitiveSubtract' }
+VMPrimitiveTest >> testPrimitiveSumDoubleWordArrayFiveSize [
+
+	| array |
+	array := self new64BitIndexableOfSize: 5.
+	memory storeLong64: 0 ofObject: array withValue: 1.
+	memory storeLong64: 1 ofObject: array withValue: 2.
+	memory storeLong64: 2 ofObject: array withValue: 3.
+	memory storeLong64: 3 ofObject: array withValue: 4.
+	memory storeLong64: 4 ofObject: array withValue: 5.
+	
+	interpreter push: array.
+	interpreter primitiveSumDoubleWordArray.
+	self assert: interpreter stackTop equals: (memory integerObjectOf: 15)
+]
+
+{ #category : 'tests - primitiveSubtract' }
+VMPrimitiveTest >> testPrimitiveSumDoubleWordArrayOneSize [
+
+	| array |
+	array := self new64BitIndexableOfSize: 1.
+	memory storeLong64: 0 ofObject: array withValue: 6.
+	interpreter push: array.
+	interpreter primitiveSumDoubleWordArray.
+	self assert: interpreter stackTop equals: (memory integerObjectOf: 6)
+]
+
+{ #category : 'tests - primitiveSubtract' }
+VMPrimitiveTest >> testPrimitiveSumDoubleWordArrayOverflow [
+
+	| array |
+	array := self new64BitIndexableOfSize: 2.
+	memory storeLong64: 0 ofObject: array withValue: (2 raisedTo: 64) - 1.
+	memory storeLong64: 1 ofObject: array withValue: 1.
+	
+	interpreter push: array.
+	interpreter primitiveSumDoubleWordArray.
+	self assert: interpreter failed.
+	self assert: interpreter stackTop equals: array
+]
+
+{ #category : 'tests - primitiveSubtract' }
+VMPrimitiveTest >> testPrimitiveSumDoubleWordArrayTwoSize [
+
+	| array |
+	array := self new64BitIndexableOfSize: 2.
+	memory storeLong64: 0 ofObject: array withValue: 6.
+	memory storeLong64: 1 ofObject: array withValue: 4.
+	interpreter push: array.
+	interpreter primitiveSumDoubleWordArray.
+	self assert: interpreter stackTop equals: (memory integerObjectOf: 10)
+]
+
+{ #category : 'tests - primitiveSubtract' }
+VMPrimitiveTest >> testPrimitiveSumDoubleWordArrayZeroSize [
+
+	| array |
+	array := self new64BitIndexableOfSize: 0.
+	interpreter push: array.
+	interpreter primitiveSumDoubleWordArray.
+	self assert: interpreter stackTop equals: (memory integerObjectOf: 0)
+]
+
 { #category : 'tests - primitiveVMParameter' }
 VMPrimitiveTest >> testPrimitiveVMParameterGetsImageVersion [
 

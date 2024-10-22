@@ -4145,6 +4145,26 @@ InterpreterPrimitives >> primitiveSubtractLargeIntegers [
 
 ]
 
+{ #category : 'arithmetic integer primitives' }
+InterpreterPrimitives >> primitiveSumDoubleWordArray [
+	"Primitive. Answer the sum of each small integer in the receiver, a IntegerArray."
+	<export: true>
+	| rcvr rcvrPtr length sum |
+	<var: #sum type: #int64_t>
+	<var: #rcvrPtr type: #'int64_t *'>
+	rcvr := self stackValue: 0. 
+	(objectMemory isDoubleWords: rcvr) ifFalse:
+		[ ^ self primitiveFail].
+	length := self stSizeOf: rcvr.
+	rcvrPtr := self cCoerce: (objectMemory firstIndexableField: rcvr) to: #'int64_t *'.
+	sum := 0.
+	0 to: length - 1 do: [ :i |
+		sum := sum + (self cCoerce: (rcvrPtr at: i) to: #int64_t).
+		(objectMemory isIntegerValue: sum) ifFalse: [ ^ self primitiveFail ].
+	].
+	self pop: 1 thenPushInteger: sum
+]
+
 { #category : 'process primitives' }
 InterpreterPrimitives >> primitiveTestAndSetOwnershipOfCriticalSection [
 	"Attempt to test-and-set the ownership of the critical section.  If not owned,

@@ -7324,6 +7324,21 @@ SpurMemoryManager >> isContextNonImm: oop [
 	^(self classIndexOf: oop) = ClassMethodContextCompactIndex
 ]
 
+{ #category : 'testing' }
+SpurMemoryManager >> isDoubleWords: anOop [
+	"Answer if the argument contains only indexable double words (no oops). See comment in
+	formatOf:"
+
+	^ (self isNonImmediate: anOop) and: [ self isDoubleWordsNonImm: anOop ]
+]
+
+{ #category : 'object testing' }
+SpurMemoryManager >> isDoubleWordsNonImm: objOop [
+	"Answer if the argument contains only indexable double words (no oops). See comment in formatOf:"
+
+	^ (self formatOf: objOop) = self sixtyFourBitIndexableFormat
+]
+
 { #category : 'obj stacks' }
 SpurMemoryManager >> isEmptyObjStack: objStack [
 	objStack = nilObj ifTrue:

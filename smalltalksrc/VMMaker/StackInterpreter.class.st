@@ -1110,7 +1110,7 @@ StackInterpreter class >> initializePrimitiveTable [
 		(96 primitiveFail)
 		(97 primitiveSnapshot)
 		(98 primitiveFail)
-		(99 primitiveFail)
+		(99 primitiveSumDoubleWordArray)
 		(100 primitivePerformInSuperclass)
 		(101 primitiveFail)
 		(102 primitiveFail)
